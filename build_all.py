@@ -21,6 +21,7 @@ import os
 import shutil
 import subprocess
 import sys
+import shlex
 
 sys.path.append(
     os.path.join(os.path.abspath(os.path.dirname(__file__)), 'pylib')
@@ -680,9 +681,24 @@ def link_benchmark(bench):
         if res.returncode != 0:
             log.warning('Warning: Link of benchmark "{bench}" failed'.format(bench=bench))
             succeeded = False
-
         log.debug(res.stdout.decode('utf-8'))
         log.debug(res.stderr.decode('utf-8'))
+
+        if "post_link" in gp:
+            for cmd_fmt in gp["post_link"]:
+                cmd = cmd_fmt.format(bench)
+                res = subprocess.run(
+                    shlex.split(cmd),
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    cwd=abs_bd_b,
+                    timeout=gp['timeout']
+                )
+                if res.returncode != 0:
+                    log.warning(f'Warning: Post-link command [[{cmd}]] for benchmark "{bench}" failed')
+                    succeeded = False
+                log.debug(res.stdout.decode('utf-8'))
+                log.debug(res.stderr.decode('utf-8'))
 
     except subprocess.TimeoutExpired:
         log.warning('Warning: link of benchmark "{bench}" timed out'.format(bench=bench))
