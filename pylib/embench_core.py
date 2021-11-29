@@ -137,6 +137,8 @@ def find_benchmarks():
     for bench in dirlist:
         abs_b = os.path.join(gp['benchdir'], bench)
         if os.path.isdir(abs_b):
+            if "md5" in bench:
+                continue
             benchmarks.append(bench)
 
     benchmarks.sort()
