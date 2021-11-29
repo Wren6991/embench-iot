@@ -687,17 +687,35 @@ def link_benchmark(bench):
         if "post_link" in gp:
             for cmd_fmt in gp["post_link"]:
                 cmd = cmd_fmt.format(bench)
+                cmd_list = shlex.split(cmd)
+
+                # Allow post_link commands to redirect their output to a file (e.g. disassembly)
+                stdout=subprocess.PIPE
+                if ">" in cmd_list and cmd_list.index(">") < len(cmd_list) - 1:
+                    i = cmd_list.index(">")
+                    cmd_list.pop(i)
+                    stdout = open(os.path.join(abs_bd_b, cmd_list.pop(i)), "w")
+                if ">>" in cmd_list and cmd_list.index(">>") < len(cmd_list) - 1:
+                    i = cmd_list.index(">>")
+                    cmd_list.pop(i)
+                    stdout = open(os.path.join(abs_bd_b, cmd_list.pop(i)), "a")
+
                 res = subprocess.run(
                     shlex.split(cmd),
-                    stdout=subprocess.PIPE,
+                    stdout=stdout,
                     stderr=subprocess.PIPE,
                     cwd=abs_bd_b,
                     timeout=gp['timeout']
                 )
-                if res.returncode != 0:
-                    log.warning(f'Warning: Post-link command [[{cmd}]] for benchmark "{bench}" failed')
-                    succeeded = False
-                log.debug(res.stdout.decode('utf-8'))
+
+                if stdout is not subprocess.PIPE:
+                    stdout.close()
+
+                if stdout is subprocess.PIPE:
+                    if res.returncode != 0:
+                        log.warning(f'Warning: Post-link command [[{cmd}]] for benchmark "{bench}" failed')
+                        succeeded = False
+                    log.debug(res.stdout.decode('utf-8'))
                 log.debug(res.stderr.decode('utf-8'))
 
     except subprocess.TimeoutExpired:
