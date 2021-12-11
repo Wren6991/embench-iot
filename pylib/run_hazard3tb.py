@@ -48,7 +48,7 @@ def build_benchmark_cmd(bench, args):
     print(f"Running {bench}")
     tb_exec = os.path.expandvars("$PROJ_ROOT/test/sim/tb_cxxrtl/tb")
 
-    return [tb_exec, bench + '.bin', '--cycles', '100000000']
+    return [tb_exec, "--bin", bench + '.bin', '--cycles', '100000000']
 
 
 def decode_results(stdout_str, stderr_str):
