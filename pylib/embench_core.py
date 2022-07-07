@@ -241,21 +241,21 @@ def output_stats(geomean, geosd, georange, count, bm_type, opt_comma):
         if gp['absolute']:
             if gp['output_format'] == output_format.JSON:
                 geomean_op = '{gm}'.format(gm=round(geomean))
-                geosd_op = '{gs:.2f}'.format(gs=geosd)
+                geosd_op = '{gs:.4f}'.format(gs=geosd)
             elif gp['output_format'] == output_format.TEXT:
                 geomean_op = '{gm:8,}'.format(gm=round(geomean))
-                geosd_op = '     {gs:6.2f}'.format(gs=geosd)
+                geosd_op = '     {gs:6.4f}'.format(gs=geosd)
 
             georange_op = '{gr:8,}'.format(gr=georange)
         else:
             if gp['output_format'] == output_format.JSON:
-                geomean_op = '{gm:.2f}'.format(gm=geomean)
-                geosd_op = '{gs:.2f}'.format(gs=geosd)
+                geomean_op = '{gm:.4f}'.format(gm=geomean)
+                geosd_op = '{gs:.4f}'.format(gs=geosd)
             elif gp['output_format'] == output_format.TEXT:
-                geomean_op = '  {gm:6.2f}'.format(gm=geomean)
-                geosd_op = '  {gs:6.2f}'.format(gs=geosd)
+                geomean_op = '  {gm:6.4f}'.format(gm=geomean)
+                geosd_op = '  {gs:6.4f}'.format(gs=geosd)
 
-            georange_op = '  {gr:6.2f}'.format(gr=georange)
+            georange_op = '  {gr:6.4f}'.format(gr=georange)
     else:
         geomean_op = ' -   '
         geosd_op = ' -   '

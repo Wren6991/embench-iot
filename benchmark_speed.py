@@ -323,7 +323,7 @@ def collect_data(benchmarks, remnant):
                 if gp['absolute']:
                     output = f'{round(raw_data[bench]):8,}'
                 else:
-                    output = f'  {rel_data[bench]:6.2f}'
+                    output = f'  {rel_data[bench]:6.4f}'
             # Want relative results (the default). Only use non-zero values.
             log.info(f'{bench:15}  {output:8}')
     elif gp['output_format'] == output_format.BASELINE:
