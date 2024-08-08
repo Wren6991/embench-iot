@@ -46,7 +46,7 @@ def build_benchmark_cmd(bench, args):
     # .cfg file.
 
     print(f"Running {bench}")
-    tb_exec = os.path.expandvars("$PROJ_ROOT/test/sim/tb_cxxrtl/tb")
+    tb_exec = os.getcwd() + "/../../tb_cxxrtl/tb"
 
     return [tb_exec, "--bin", bench + '.bin', '--cycles', '100000000']
 

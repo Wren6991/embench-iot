@@ -28,6 +28,7 @@ SECTIONS
   } > RAM
   _edata = .; PROVIDE (_edata = .);
   .bss : {
+    PROVIDE(__bss_start = .);
     *(.sbss*)
     *(.bss .bss.*)
     . = ALIGN(4);
