@@ -48,7 +48,13 @@ def build_benchmark_cmd(bench, args):
     print(f"Running {bench}")
     tb_exec = os.getcwd() + "/../../tb_cxxrtl/tb"
 
-    return [tb_exec, "--bin", bench + '.bin', '--cycles', '100000000']
+    return [
+        tb_exec,
+        "--bin", bench + '.bin',
+        '--cycles', '100000000',
+        '--logfile', bench + '_run.log',
+        '--cpuret'
+    ]
 
 
 def decode_results(stdout_str, stderr_str):

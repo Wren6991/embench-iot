@@ -211,10 +211,16 @@ def benchmark_speed(bench, target_args):
         log.warning(f'Warning: {bench} executable not found.')
         succeeded = False
 
+    # Hazard3: workaround weird subprocess issues on MacOS by using logfile
+    stdout_bytes = res.stdout
+    if "--logfile" in arglist:
+        logfile_name = arglist[arglist.index("--logfile") + 1]
+        stdout_bytes = open(os.path.join(appdir, logfile_name), "rb").read()
+
     # Process results
     if succeeded:
         exec_time = decode_results(
-            res.stdout.decode('utf-8'), res.stderr.decode('utf-8')
+            stdout_bytes.decode('utf-8'), res.stderr.decode('utf-8')
         )
         succeeded = exec_time > 0
 
