@@ -13,7 +13,7 @@
 // ----------------------------------------------------------------------------
 // Hazard3 testbench IO
 
-#define IO_BASE 0x80000000
+#define IO_BASE 0xc0000000
 
 struct io_hw {
   volatile uint32_t print_char;
